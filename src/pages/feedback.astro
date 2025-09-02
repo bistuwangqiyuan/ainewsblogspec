@@ -1,0 +1,55 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { supabase } from '../utils/supabaseClient';
+
+let message: string | null = null;
+let list: { id: number; title: string; content: string; created_at: string }[] = [];
+
+if (Astro.request.method === 'POST') {
+    const formData = await Astro.request.formData();
+    const title = String(formData.get('title') || '').trim();
+    const content = String(formData.get('content') || '').trim();
+    try {
+        const user = (await supabase.auth.getUser()).data.user;
+        if (!user) throw new Error('请先登录再提交反馈');
+        const { error } = await supabase.from('feedback').insert({ user_id: user.id, title, content });
+        if (error) throw error;
+        message = '提交成功';
+    } catch (e: any) {
+        message = e?.message || '提交失败';
+    }
+}
+
+{
+    const { data, error } = await supabase.from('feedback').select('id,title,content,created_at').order('created_at', { ascending: false }).limit(50);
+    if (!error && data) list = data as any;
+}
+---
+
+<Layout title="用户反馈">
+    <h1 class="mb-4">用户反馈</h1>
+    {
+        message && (
+            <div class="mb-4">
+                <strong>{message}</strong>
+            </div>
+        )
+    }
+    <form method="post" class="grid gap-2 max-w-xl mb-6">
+        <input class="input input-bordered" type="text" name="title" placeholder="标题" required />
+        <textarea class="textarea textarea-bordered" name="content" placeholder="内容" required></textarea>
+        <button class="btn btn-primary" type="submit">提交</button>
+    </form>
+    <h2 class="mb-2">最近反馈</h2>
+    <ul class="space-y-2">
+        {
+            list.map((f) => (
+                <li class="border border-white/10 p-3 rounded">
+                    <div class="font-bold">{f.title}</div>
+                    <div class="opacity-80 text-sm">{new Date(f.created_at).toLocaleString()}</div>
+                    <div>{f.content}</div>
+                </li>
+            ))
+        }
+    </ul>
+</Layout>

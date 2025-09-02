@@ -1,0 +1,33 @@
+---
+const { params } = Astro.props as { params: Record<string, string | undefined> };
+const q = params.q ?? '';
+const timeWindow = params.timeWindow ?? '';
+const source = params.source ?? '';
+const sort = params.sort ?? 'published_at';
+const order = params.order ?? 'desc';
+---
+
+<form method="get" class="grid gap-2 sm:grid-cols-5 mb-4">
+    <input type="text" name="q" value={q} placeholder="关键词" class="input input-bordered" />
+    <select name="timeWindow" class="select select-bordered" value={timeWindow}>
+        <option value="">全部时间</option>
+        <option value="24h">24小时</option>
+        <option value="7d">7天</option>
+        <option value="30d">30天</option>
+    </select>
+    <input type="text" name="source" value={source} placeholder="来源域名" class="input input-bordered" />
+    <select name="sort" class="select select-bordered" value={sort}>
+        <option value="published_at">按时间</option>
+        <option value="popularity_score">按热度</option>
+        <option value="growth_score">按增长</option>
+    </select>
+    <select name="order" class="select select-bordered" value={order}>
+        <option value="desc">降序</option>
+        <option value="asc">升序</option>
+    </select>
+    <div class="sm:col-span-5 flex gap-2">
+        <button type="submit" class="btn btn-primary">筛选</button>
+        <a href="/" class="btn">重置</a>
+    </div>
+    <input type="hidden" name="page" value="1" />
+</form>

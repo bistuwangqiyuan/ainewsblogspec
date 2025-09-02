@@ -1,0 +1,9 @@
+[build]
+  command = "pnpm run build"
+  publish = "dist"
+
+[[edge_functions]]
+  function = "rewrite"
+  path = "/edge"
+
+

@@ -1,21 +1,48 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ContextAlert from '../components/ContextAlert.astro';
-import Markdown from '../components/Markdown.astro';
+import Alert from '../components/Alert.astro';
+import Filters from '../components/Filters.astro';
+import ArticlesTable from '../components/ArticlesTable.astro';
+import Paginator from '../components/Paginator.astro';
+import { fetchArticles } from '../utils/supabaseClient';
 
-const explainer = `
-An Astro website can go way beyond static pages - on the right platform.
+const page = Number(Astro.url.searchParams.get('page') ?? '1') || 1;
+const q = Astro.url.searchParams.get('q') ?? undefined;
+const timeWindow = Astro.url.searchParams.get('timeWindow') ?? undefined;
+const source = Astro.url.searchParams.get('source') ?? undefined;
+const sort = (Astro.url.searchParams.get('sort') ?? 'published_at') as any;
+const order = (Astro.url.searchParams.get('order') ?? 'desc') as any;
+const pageSize = 20;
 
-Netlify supports not only [Streaming SSR](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming) and fast [Edge Middleware](https://docs.astro.build/en/guides/middleware/), but also [on-demand revalidation](https://www.netlify.com/blog/cache-tags-and-purge-api-on-netlify/) and [stale-while-revalidate](https://www.netlify.com/blog/swr-and-fine-grained-cache-control/). 
-Any page or data can be rebuilt only when needed, without site visitors ever getting a performance hit.
-`;
+let items = [] as any[];
+let total = 0;
+let errorMsg: string | null = null;
+try {
+    const r = await fetchArticles({ page, pageSize, sort, order, keyword: q, source, timeWindow });
+    items = r.data;
+    total = r.total;
+} catch (e: any) {
+    errorMsg = e?.message || '加载失败';
+}
 ---
 
-<Layout title="Welcome to Astro.">
-    <ContextAlert class="mb-8" />
-    <h1 class="mb-10">Netlify Platform Starter for Astro</h1>
-    <Markdown content={explainer} class="mb-10 text-lg" />
-    <p>
-        <a href="https://docs.netlify.com/frameworks/astro/" class="btn btn-lg sm:min-w-64">Read the Docs</a>
-    </p>
+<Layout title="AI 编程资讯聚合">
+    <h1 class="mb-6">AI 编程资讯</h1>
+    <Filters params={{ q, timeWindow, source, sort, order }} />
+    {
+        errorMsg ? (
+            <Alert>{errorMsg}</Alert>
+        ) : (
+            <>
+                {items.length === 0 ? (
+                    <Alert>暂无数据，请稍后重试或调整筛选条件。</Alert>
+                ) : (
+                    <>
+                        <ArticlesTable items={items} />
+                        <Paginator page={page} pageSize={pageSize} total={total} />
+                    </>
+                )}
+            </>
+        )
+    }
 </Layout>

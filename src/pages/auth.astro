@@ -1,0 +1,9 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AuthForm from '../components/AuthForm';
+---
+
+<Layout title="登录 / 注册">
+    <h1 class="mb-4">登录 / 注册</h1>
+    <AuthForm client:load />
+</Layout>

@@ -1,0 +1,42 @@
+---
+import type { ArticleRow } from '../utils/supabaseClient';
+const { items } = Astro.props as { items: ArticleRow[] };
+---
+
+<div class="overflow-x-auto">
+    <table class="min-w-full text-sm">
+        <thead>
+            <tr class="text-left border-b border-white/10">
+                <th class="py-2 pr-4">标题</th>
+                <th class="py-2 pr-4">来源</th>
+                <th class="py-2 pr-4">发布时间</th>
+                <th class="py-2 pr-4">热度</th>
+                <th class="py-2 pr-4">增长</th>
+                <th class="py-2 pr-4">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {
+                items.map((a) => (
+                    <tr class="border-b border-white/5">
+                        <td class="py-2 pr-4">
+                            <a href={a.original_url} target="_blank" rel="noopener" class="underline">
+                                {a.title}
+                            </a>
+                            {a.summary && <div class="opacity-70 line-clamp-2">{a.summary}</div>}
+                        </td>
+                        <td class="py-2 pr-4">{new URL(a.original_url).hostname}</td>
+                        <td class="py-2 pr-4">{a.published_at ? new Date(a.published_at).toLocaleString() : '-'}</td>
+                        <td class="py-2 pr-4">{a.popularity_score ?? 0}</td>
+                        <td class="py-2 pr-4">{a.growth_score ?? 0}</td>
+                        <td class="py-2 pr-4">
+                            <a href={a.original_url} target="_blank" rel="noopener" class="btn btn-sm">
+                                原文
+                            </a>
+                        </td>
+                    </tr>
+                ))
+            }
+        </tbody>
+    </table>
+</div>

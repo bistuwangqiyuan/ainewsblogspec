@@ -1,9 +1,13 @@
 {
-    "extends": "astro/tsconfigs/base",
+    // Astro/Vitest 解析兼容：直接声明基础编译选项，避免解析 extends 失败
     "include": [".astro/types.d.ts", "**/*"],
     "exclude": ["dist"],
     "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
         "jsx": "react-jsx",
-        "jsxImportSource": "react"
+        "jsxImportSource": "react",
+        "types": ["vitest/importMeta", "vitest/globals", "vite/client", "astro/client"]
     }
 }
