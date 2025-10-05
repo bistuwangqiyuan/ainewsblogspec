@@ -1,0 +1,21 @@
+{
+  "name": "AI编程资讯聚合",
+  "short_name": "AI编程",
+  "description": "AI编程工具与实践的中文资讯聚合，提供最新的AI编程新闻、工具、教程和实践案例",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["news", "education", "productivity"],
+  "lang": "zh-CN",
+  "dir": "ltr"
+}

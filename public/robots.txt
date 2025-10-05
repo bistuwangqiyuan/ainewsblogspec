@@ -1,5 +1,23 @@
+# Robots.txt for AI编程资讯聚合
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /edge/
+
+# Crawl-delay for politeness
+Crawl-delay: 1
+
+# Sitemap
 Sitemap: /sitemap.xml
+
+# Common bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
 
 

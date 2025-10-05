@@ -6,9 +6,17 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
     vite: {
-        plugins: [tailwindcss()]
+        plugins: [tailwindcss()],
+        build: {
+            cssMinify: 'lightningcss'
+        }
     },
     integrations: [react()],
     adapter: netlify(),
-    site: process.env.SITE || undefined
+    site: process.env.SITE || undefined,
+    output: 'server',
+    compressHTML: true,
+    build: {
+        inlineStylesheets: 'auto'
+    }
 });

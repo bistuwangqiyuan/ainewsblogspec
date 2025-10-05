@@ -7,33 +7,106 @@ import Footer from '../components/Footer.astro';
 
 interface Props {
     title: string;
+    description?: string;
+    keywords?: string;
+    image?: string;
+    article?: boolean;
+    publishedTime?: string;
+    author?: string;
+    canonicalURL?: string;
 }
 
-const { title } = Astro.props;
+const { 
+    title, 
+    description = 'AI 编程工具与实践的中文资讯聚合，提供最新的AI编程新闻、工具、教程和实践案例，支持分页、筛选与排序。',
+    keywords = 'AI编程,人工智能,编程工具,AI新闻,编程资讯,机器学习,深度学习,AI开发',
+    image = '/images/og-image.jpg',
+    article = false,
+    publishedTime,
+    author = 'AI编程资讯',
+    canonicalURL
+} = Astro.props;
+
+const siteURL = Astro.site?.toString() || Astro.url.origin;
+const currentURL = canonicalURL || Astro.url.toString();
+const imageURL = image.startsWith('http') ? image : new URL(image, siteURL).toString();
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        
+        <!-- Primary Meta Tags -->
         <title>{title}</title>
-        <meta name="viewport" content="width=device-width" />
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
+        <meta name="keywords" content={keywords} />
+        <meta name="author" content={author} />
         <meta name="generator" content={Astro.generator} />
-        <meta name="description" content="AI 编程工具与实践的中文资讯聚合，支持分页、筛选与排序。" />
-        <meta property="og:type" content="website" />
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+        <link rel="canonical" href={currentURL} />
+        
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content={article ? 'article' : 'website'} />
+        <meta property="og:url" content={currentURL} />
         <meta property="og:title" content={title} />
-        <meta property="og:description" content="AI 编程工具与实践的中文资讯聚合，支持分页、筛选与排序。" />
-        <meta property="og:url" content={Astro.url.toString()} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={imageURL} />
+        <meta property="og:site_name" content="AI编程资讯聚合" />
+        <meta property="og:locale" content="zh_CN" />
+        {article && publishedTime && <meta property="article:published_time" content={publishedTime} />}
+        {article && author && <meta property="article:author" content={author} />}
+        
+        <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
-        <script type="application/ld+json">{JSON.stringify({
+        <meta name="twitter:url" content={currentURL} />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={imageURL} />
+        
+        <!-- Additional SEO -->
+        <meta name="theme-color" content="#000000" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        
+        <!-- Structured Data -->
+        <script type="application/ld+json" set:html={JSON.stringify({
             '@context': 'https://schema.org',
-            '@type': 'WebSite',
+            '@type': article ? 'Article' : 'WebSite',
             name: title,
-            url: Astro.url.origin,
-          })}
-        </script>
+            description: description,
+            url: currentURL,
+            ...(article ? {
+                headline: title,
+                datePublished: publishedTime,
+                author: {
+                    '@type': 'Organization',
+                    name: author
+                }
+            } : {
+                potentialAction: {
+                    '@type': 'SearchAction',
+                    target: {
+                        '@type': 'EntryPoint',
+                        urlTemplate: `${siteURL}/?q={search_term_string}`
+                    },
+                    'query-input': 'required name=search_term_string'
+                }
+            })
+        })} />
+        
+        <!-- Icons & Manifest -->
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="apple-touch-icon" href="/favicon.svg" />
+        <link rel="manifest" href="/manifest.json" />
+        
+        <!-- Preload -->
         <link rel="preload" as="font" type="font/woff2" href={interWoff2} crossorigin />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
     </head>
     <body class="antialiased text-white bg-complementary">
         <div class="flex flex-col min-h-screen px-6 bg-noise sm:px-12">
