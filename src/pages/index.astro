@@ -8,7 +8,8 @@ import { fetchArticles } from '../utils/supabaseClient';
 
 const page = Number(Astro.url.searchParams.get('page') ?? '1') || 1;
 const q = Astro.url.searchParams.get('q') ?? undefined;
-const timeWindow = Astro.url.searchParams.get('timeWindow') ?? undefined;
+const timeWindowParam = Astro.url.searchParams.get('timeWindow');
+const timeWindow = (timeWindowParam === '24h' || timeWindowParam === '7d' || timeWindowParam === '30d') ? timeWindowParam : undefined;
 const source = Astro.url.searchParams.get('source') ?? undefined;
 const sort = (Astro.url.searchParams.get('sort') ?? 'published_at') as any;
 const order = (Astro.url.searchParams.get('order') ?? 'desc') as any;
@@ -24,13 +25,61 @@ try {
 } catch (e: any) {
     errorMsg = e?.message || '加载失败';
 }
+
+const siteURL = Astro.site?.toString() || Astro.url.origin;
+
+// Enhanced structured data for homepage
+const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'AI编程资讯聚合',
+    description: 'AI编程资讯聚合平台，汇集最新的人工智能编程工具、新闻、教程和实践案例',
+    url: siteURL,
+    potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+            '@type': 'EntryPoint',
+            urlTemplate: `${siteURL}?q={search_term_string}`
+        },
+        'query-input': 'required name=search_term_string'
+    },
+    publisher: {
+        '@type': 'Organization',
+        name: 'AI编程资讯',
+        logo: {
+            '@type': 'ImageObject',
+            url: `${siteURL}images/og-image.svg`
+        }
+    },
+    inLanguage: 'zh-CN',
+    keywords: 'AI编程,人工智能编程,AI工具,编程资讯,机器学习,深度学习,AI新闻,编程教程'
+};
+
+// BreadcrumbList structured data
+const breadcrumbData = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+        {
+            '@type': 'ListItem',
+            position: 1,
+            name: '首页',
+            item: siteURL
+        }
+    ]
+};
 ---
 
 <Layout 
     title="AI 编程资讯聚合 - 最新AI编程工具、新闻与实践"
     description="AI编程资讯聚合平台，汇集最新的人工智能编程工具、新闻、教程和实践案例。支持实时搜索、筛选和排序，帮助开发者快速获取AI领域的前沿信息。"
     keywords="AI编程,人工智能编程,AI工具,编程资讯,机器学习,深度学习,AI新闻,编程教程,AI开发工具,ChatGPT,GitHub Copilot"
+    image="/images/og-image.svg"
 >
+    <!-- Enhanced structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} slot="head" />
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} slot="head" />
+    
     <h1 class="mb-6">AI 编程资讯</h1>
     <Filters params={{ q, timeWindow, source, sort, order }} />
     {

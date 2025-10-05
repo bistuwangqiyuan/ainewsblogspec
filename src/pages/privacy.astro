@@ -6,7 +6,24 @@ import Layout from '../layouts/Layout.astro';
     title="隐私政策 - AI编程资讯聚合"
     description="查看AI编程资讯聚合平台的隐私政策，了解我们如何收集、使用和保护您的个人信息。"
     keywords="隐私政策,数据保护,用户隐私"
+    image="/images/og-image.svg"
 >
-    <h1 class="mb-4">隐私政策</h1>
-    <p>我们尽量少收集数据，仅用于站点必要功能。详情以本页声明为准。</p>
+    <article itemscope itemtype="https://schema.org/WebPage">
+        <h1 class="mb-4" itemprop="name">隐私政策</h1>
+        <div itemprop="text">
+            <p>我们尽量少收集数据，仅用于站点必要功能。详情以本页声明为准。</p>
+            <section class="mt-6">
+                <h2 class="text-xl font-semibold mb-2">数据收集</h2>
+                <p>我们仅收集必要的匿名访问数据，用于改善网站性能和用户体验。</p>
+            </section>
+            <section class="mt-6">
+                <h2 class="text-xl font-semibold mb-2">数据使用</h2>
+                <p>收集的数据仅用于网站运营和功能改进，不会与第三方共享。</p>
+            </section>
+            <section class="mt-6">
+                <h2 class="text-xl font-semibold mb-2">数据安全</h2>
+                <p>我们采取合理的技术措施保护您的数据安全。</p>
+            </section>
+        </div>
+    </article>
 </Layout>

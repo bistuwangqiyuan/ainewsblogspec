@@ -6,7 +6,13 @@ import Layout from '../layouts/Layout.astro';
     title="联系我们 - AI编程资讯聚合"
     description="联系AI编程资讯聚合平台，提交您的建议、问题或合作需求。我们期待听到您的声音。"
     keywords="联系我们,反馈,建议,合作"
+    image="/images/og-image.svg"
 >
-    <h1 class="mb-4">联系我们</h1>
-    <p>如有建议或问题，请前往反馈页面提交。</p>
+    <article itemscope itemtype="https://schema.org/ContactPage">
+        <h1 class="mb-4" itemprop="name">联系我们</h1>
+        <div itemprop="text">
+            <p>如有建议或问题，请前往<a href="/feedback" class="text-blue-400 hover:underline">反馈页面</a>提交。</p>
+            <p class="mt-4">我们重视每一位用户的意见和建议，您的反馈将帮助我们不断改进服务质量。</p>
+        </div>
+    </article>
 </Layout>

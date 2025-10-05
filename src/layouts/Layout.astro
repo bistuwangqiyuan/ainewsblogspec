@@ -30,6 +30,9 @@ const {
 const siteURL = Astro.site?.toString() || Astro.url.origin;
 const currentURL = canonicalURL || Astro.url.toString();
 const imageURL = image.startsWith('http') ? image : new URL(image, siteURL).toString();
+
+// Remove trailing slash from canonical URL for consistency
+const cleanCanonicalURL = currentURL.endsWith('/') && currentURL !== siteURL ? currentURL.slice(0, -1) : currentURL;
 ---
 
 <!doctype html>
@@ -47,7 +50,7 @@ const imageURL = image.startsWith('http') ? image : new URL(image, siteURL).toSt
         <meta name="author" content={author} />
         <meta name="generator" content={Astro.generator} />
         <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-        <link rel="canonical" href={currentURL} />
+        <link rel="canonical" href={cleanCanonicalURL} />
         
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content={article ? 'article' : 'website'} />
@@ -103,10 +106,23 @@ const imageURL = image.startsWith('http') ? image : new URL(image, siteURL).toSt
         <link rel="apple-touch-icon" href="/favicon.svg" />
         <link rel="manifest" href="/manifest.json" />
         
+        <!-- RSS Feed -->
+        <link rel="alternate" type="application/rss+xml" title="AI编程资讯聚合 RSS Feed" href="/rss.xml" />
+        
         <!-- Preload -->
         <link rel="preload" as="font" type="font/woff2" href={interWoff2} crossorigin />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+        
+        <!-- Performance hints -->
+        <meta name="format-detection" content="telephone=no" />
+        <meta http-equiv="x-dns-prefetch-control" content="on" />
+        
+        <!-- Humans.txt -->
+        <link rel="author" href="/humans.txt" />
+        
+        <!-- Additional head content -->
+        <slot name="head" />
     </head>
     <body class="antialiased text-white bg-complementary">
         <div class="flex flex-col min-h-screen px-6 bg-noise sm:px-12">

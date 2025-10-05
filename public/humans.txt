@@ -1,0 +1,14 @@
+/* TEAM */
+Developer: AI编程资讯团队
+Site: https://ainewsblogspec.netlify.app
+Location: China
+
+/* THANKS */
+感谢所有为AI编程社区做出贡献的开发者
+
+/* SITE */
+Last update: 2025/10/05
+Language: 简体中文 / Simplified Chinese
+Doctype: HTML5
+IDE: Cursor, VS Code
+Technologies: Astro, React, Tailwind CSS, Supabase, Netlify
