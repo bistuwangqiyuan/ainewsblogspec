@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1a2e;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d946ef;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#grad1)"/>
+  
+  <!-- Decorative elements -->
+  <circle cx="100" cy="100" r="150" fill="#6366f1" opacity="0.1"/>
+  <circle cx="1100" cy="530" r="180" fill="#d946ef" opacity="0.1"/>
+  
+  <!-- Main content box -->
+  <rect x="80" y="120" width="1040" height="390" rx="20" fill="#1a1a2e" opacity="0.8"/>
+  
+  <!-- Title -->
+  <text x="600" y="260" font-family="Arial, sans-serif" font-size="72" font-weight="bold" fill="url(#grad2)" text-anchor="middle">
+    AI 编程资讯聚合
+  </text>
+  
+  <!-- Subtitle -->
+  <text x="600" y="340" font-family="Arial, sans-serif" font-size="36" fill="#e0e0e0" text-anchor="middle">
+    最新AI编程工具、新闻与实践
+  </text>
+  
+  <!-- Bottom text -->
+  <text x="600" y="420" font-family="Arial, sans-serif" font-size="28" fill="#a0a0a0" text-anchor="middle">
+    实时搜索 · 智能筛选 · 专业聚合
+  </text>
+  
+  <!-- AI Icon -->
+  <g transform="translate(200, 180)">
+    <circle cx="0" cy="0" r="30" fill="url(#grad2)"/>
+    <path d="M -10,-10 L -10,10 L 10,10 L 10,-10 Z M -5,-5 L -5,5 M 0,-5 L 0,5 M 5,-5 L 5,5" 
+          stroke="#ffffff" stroke-width="2" fill="none"/>
+  </g>
+  
+  <!-- Code Icon -->
+  <g transform="translate(1000, 180)">
+    <rect x="-30" y="-25" width="60" height="50" rx="5" fill="url(#grad2)"/>
+    <path d="M -15,-5 L -20,0 L -15,5 M 15,-5 L 20,0 L 15,5 M 0,-10 L -5,10" 
+          stroke="#ffffff" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  </g>
+</svg>

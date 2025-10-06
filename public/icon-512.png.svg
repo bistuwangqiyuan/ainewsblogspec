@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="iconGrad512" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d946ef;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="512" height="512" rx="100" fill="url(#iconGrad512)"/>
+  
+  <!-- AI Symbol -->
+  <circle cx="256" cy="180" r="70" fill="#ffffff" opacity="0.9"/>
+  <text x="256" y="210" font-family="Arial, sans-serif" font-size="90" font-weight="bold" fill="url(#iconGrad512)" text-anchor="middle">AI</text>
+  
+  <!-- Code brackets -->
+  <path d="M 130,320 L 90,360 L 130,400" stroke="#ffffff" stroke-width="16" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 382,320 L 422,360 L 382,400" stroke="#ffffff" stroke-width="16" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Code line -->
+  <line x1="180" y1="360" x2="332" y2="360" stroke="#ffffff" stroke-width="16" stroke-linecap="round"/>
+</svg>

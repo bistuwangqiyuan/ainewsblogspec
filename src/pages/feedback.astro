@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import { supabase } from '../utils/supabaseClient';
 
 let message: string | null = null;
@@ -27,10 +28,15 @@ if (Astro.request.method === 'POST') {
 ---
 
 <Layout 
-    title="用户反馈 - AI编程资讯聚合"
-    description="提交您对AI编程资讯聚合平台的反馈、建议或问题，帮助我们改进服务质量。"
-    keywords="用户反馈,建议,问题反馈"
+    title="用户反馈 - AI编程资讯聚合 | 提交建议与问题"
+    description="提交您对AI编程资讯聚合平台的反馈、建议或问题，帮助我们改进服务质量。您的声音对我们很重要。"
+    keywords="用户反馈,建议,问题反馈,意见提交,客户反馈,用户评价"
 >
+    <Breadcrumb items={[
+        { name: '首页', url: '/' },
+        { name: '用户反馈' }
+    ]} />
+    
     <h1 class="mb-4">用户反馈</h1>
     {
         message && (

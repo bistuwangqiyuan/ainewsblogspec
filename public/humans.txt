@@ -12,3 +12,4 @@ Language: 简体中文 / Simplified Chinese
 Doctype: HTML5
 IDE: Cursor, VS Code
 Technologies: Astro, React, Tailwind CSS, Supabase, Netlify
+

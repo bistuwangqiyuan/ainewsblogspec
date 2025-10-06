@@ -1,0 +1,53 @@
+---
+interface BreadcrumbItem {
+  name: string;
+  url?: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+const siteURL = Astro.site?.toString() || Astro.url.origin;
+
+// Generate JSON-LD structured data for breadcrumbs
+const breadcrumbData = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: items.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.name,
+    ...(item.url ? { item: new URL(item.url, siteURL).toString() } : {})
+  }))
+};
+---
+
+<!-- JSON-LD Breadcrumb structured data -->
+<script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} />
+
+<!-- Visual breadcrumb navigation -->
+<nav aria-label="面包屑导航" class="mb-6">
+  <ol class="flex flex-wrap items-center gap-2 text-sm" itemscope itemtype="https://schema.org/BreadcrumbList">
+    {items.map((item, index) => (
+      <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="flex items-center gap-2">
+        {item.url ? (
+          <a 
+            href={item.url} 
+            itemprop="item"
+            class="text-primary hover:underline underline-offset-4"
+          >
+            <span itemprop="name">{item.name}</span>
+          </a>
+        ) : (
+          <span itemprop="name" class="text-gray-400">{item.name}</span>
+        )}
+        <meta itemprop="position" content={String(index + 1)} />
+        {index < items.length - 1 && (
+          <span class="text-gray-500" aria-hidden="true">/</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>

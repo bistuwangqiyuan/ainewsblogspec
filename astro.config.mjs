@@ -8,25 +8,15 @@ export default defineConfig({
     vite: {
         plugins: [tailwindcss()],
         build: {
-            cssMinify: 'lightningcss',
-            minify: 'esbuild',
-            rollupOptions: {
-                output: {
-                    manualChunks: undefined,
-                }
-            }
+            cssMinify: 'lightningcss'
         }
     },
     integrations: [react()],
     adapter: netlify(),
-    site: process.env.SITE || 'https://ainewsblogspec.netlify.app',
+    site: process.env.SITE || undefined,
     output: 'server',
     compressHTML: true,
     build: {
-        inlineStylesheets: 'auto',
-        assets: '_astro'
-    },
-    // SEO optimizations
-    trailingSlash: 'never',
-    scopedStyleStrategy: 'attribute'
+        inlineStylesheets: 'auto'
+    }
 });

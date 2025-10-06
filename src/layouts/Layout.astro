@@ -75,26 +75,61 @@ const cleanCanonicalURL = currentURL.endsWith('/') && currentURL !== siteURL ? c
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         
-        <!-- Structured Data -->
+        <!-- Structured Data - Organization -->
+        <script type="application/ld+json" set:html={JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: 'AI编程资讯聚合',
+            url: siteURL,
+            logo: `${siteURL}images/og-image.svg`,
+            description: 'AI编程工具与实践的中文资讯聚合平台',
+            sameAs: [
+                `${siteURL}about`,
+                `${siteURL}contact`
+            ],
+            contactPoint: {
+                '@type': 'ContactPoint',
+                contactType: '客户支持',
+                url: `${siteURL}contact`
+            }
+        })} />
+        
+        <!-- Structured Data - Page/Article -->
         <script type="application/ld+json" set:html={JSON.stringify({
             '@context': 'https://schema.org',
             '@type': article ? 'Article' : 'WebSite',
             name: title,
             description: description,
             url: currentURL,
+            inLanguage: 'zh-CN',
+            image: imageURL,
             ...(article ? {
                 headline: title,
                 datePublished: publishedTime,
+                dateModified: publishedTime || new Date().toISOString(),
                 author: {
                     '@type': 'Organization',
-                    name: author
+                    name: author,
+                    url: siteURL
+                },
+                publisher: {
+                    '@type': 'Organization',
+                    name: 'AI编程资讯',
+                    logo: {
+                        '@type': 'ImageObject',
+                        url: `${siteURL}images/og-image.svg`
+                    }
+                },
+                mainEntityOfPage: {
+                    '@type': 'WebPage',
+                    '@id': currentURL
                 }
             } : {
                 potentialAction: {
                     '@type': 'SearchAction',
                     target: {
                         '@type': 'EntryPoint',
-                        urlTemplate: `${siteURL}/?q={search_term_string}`
+                        urlTemplate: `${siteURL}?q={search_term_string}`
                     },
                     'query-input': 'required name=search_term_string'
                 }
@@ -103,20 +138,48 @@ const cleanCanonicalURL = currentURL.endsWith('/') && currentURL !== siteURL ? c
         
         <!-- Icons & Manifest -->
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link rel="apple-touch-icon" href="/favicon.svg" />
+        <link rel="icon" type="image/svg+xml" sizes="any" href="/favicon.svg" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png.svg" />
+        <link rel="icon" type="image/svg+xml" sizes="192x192" href="/icon-192.png.svg" />
+        <link rel="icon" type="image/svg+xml" sizes="512x512" href="/icon-512.png.svg" />
         <link rel="manifest" href="/manifest.json" />
+        <meta name="msapplication-TileColor" content="#6366f1" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
         
         <!-- RSS Feed -->
         <link rel="alternate" type="application/rss+xml" title="AI编程资讯聚合 RSS Feed" href="/rss.xml" />
         
-        <!-- Preload -->
-        <link rel="preload" as="font" type="font/woff2" href={interWoff2} crossorigin />
+        <!-- Preload & Performance -->
+        <link rel="preload" as="font" type="font/woff2" href={interWoff2} crossorigin="anonymous" />
         <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         
-        <!-- Performance hints -->
+        <!-- Prefetch important pages -->
+        <link rel="prefetch" href="/about" />
+        <link rel="prefetch" href="/contact" />
+        
+        <!-- Performance & Optimization hints -->
         <meta name="format-detection" content="telephone=no" />
         <meta http-equiv="x-dns-prefetch-control" content="on" />
+        <meta name="color-scheme" content="dark light" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="AI编程资讯" />
+        
+        <!-- Geo tags (for Chinese audience) -->
+        <meta name="geo.region" content="CN" />
+        <meta name="geo.placename" content="China" />
+        <meta name="language" content="zh-CN" />
+        
+        <!-- Additional Open Graph -->
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:alt" content={title} />
+        
+        <!-- Twitter additional -->
+        <meta name="twitter:creator" content="@AI编程资讯" />
+        <meta name="twitter:site" content="@AI编程资讯" />
         
         <!-- Humans.txt -->
         <link rel="author" href="/humans.txt" />

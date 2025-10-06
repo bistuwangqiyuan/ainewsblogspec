@@ -5,13 +5,34 @@ export const GET: APIRoute = async ({ site }) => {
   const siteUrl = site?.toString() || 'https://ainewsblogspec.netlify.app';
   
   try {
-    // Fetch latest 50 articles
+    // Fetch latest 50 articles (returns empty array if Supabase not configured)
     const { data: items } = await fetchArticles({ 
       page: 1, 
       pageSize: 50, 
       sort: 'published_at', 
       order: 'desc' 
     });
+    
+    // If no items, return a minimal RSS feed
+    if (!items || items.length === 0) {
+      const fallbackRss = `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>AI编程资讯聚合</title>
+    <link>${siteUrl}</link>
+    <description>AI编程工具与实践的中文资讯聚合</description>
+    <language>zh-CN</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <atom:link href="${siteUrl}rss.xml" rel="self" type="application/rss+xml"/>
+  </channel>
+</rss>`;
+      return new Response(fallbackRss, {
+        headers: {
+          'Content-Type': 'application/xml; charset=utf-8',
+          'Cache-Control': 'public, max-age=300',
+        },
+      });
+    }
 
     const rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" 
@@ -71,3 +92,4 @@ ${items.map((item: any) => `    <item>
     });
   }
 };
+

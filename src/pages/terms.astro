@@ -1,12 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 ---
 
 <Layout 
-    title="服务条款 - AI编程资讯聚合"
-    description="阅读AI编程资讯聚合平台的服务条款，了解使用本网站的规则和条件。"
-    keywords="服务条款,使用条款,用户协议"
+    title="服务条款 - AI编程资讯聚合 | 用户协议与使用规则"
+    description="阅读AI编程资讯聚合平台的服务条款，了解使用本网站的规则、条件和用户权益保护政策。"
+    keywords="服务条款,使用条款,用户协议,法律声明,使用规则"
 >
+    <Breadcrumb items={[
+        { name: '首页', url: '/' },
+        { name: '服务条款' }
+    ]} />
+    
     <h1 class="mb-4">服务条款</h1>
     <p>使用本网站即表示您同意遵守本条款及相关政策。</p>
 </Layout>

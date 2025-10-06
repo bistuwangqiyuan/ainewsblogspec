@@ -1,22 +1,67 @@
 {
-  "name": "AI编程资讯聚合",
-  "short_name": "AI编程",
-  "description": "AI编程工具与实践的中文资讯聚合，提供最新的AI编程新闻、工具、教程和实践案例",
-  "start_url": "/",
+  "name": "AI编程资讯聚合 - 最新AI编程工具与新闻",
+  "short_name": "AI编程资讯",
+  "description": "AI编程工具与实践的中文资讯聚合平台，提供最新的AI编程新闻、工具、教程和实践案例。实时搜索、智能筛选、专业聚合。",
+  "start_url": "/?utm_source=pwa",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#000000",
-  "theme_color": "#000000",
+  "theme_color": "#6366f1",
   "orientation": "portrait-primary",
   "icons": [
     {
       "src": "/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "apple touch icon"
     }
   ],
-  "categories": ["news", "education", "productivity"],
+  "categories": ["news", "education", "productivity", "developer tools"],
   "lang": "zh-CN",
-  "dir": "ltr"
+  "dir": "ltr",
+  "screenshots": [
+    {
+      "src": "/images/og-image.jpg",
+      "sizes": "1200x630",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "最新资讯",
+      "short_name": "最新",
+      "description": "查看最新AI编程资讯",
+      "url": "/?sort=published_at&order=desc",
+      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
+    },
+    {
+      "name": "热门文章",
+      "short_name": "热门",
+      "description": "查看热门AI编程文章",
+      "url": "/?timeWindow=7d&sort=published_at",
+      "icons": [{ "src": "/favicon.svg", "sizes": "96x96" }]
+    }
+  ]
 }
 

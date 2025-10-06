@@ -1,13 +1,19 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 ---
 
 <Layout 
-    title="关于我们 - AI编程资讯聚合"
-    description="了解AI编程资讯聚合平台，我们专注于收集和整理AI编程相关的中文资讯，为开发者提供工具与实践指南。"
-    keywords="关于我们,AI编程平台,资讯聚合,关于"
+    title="关于我们 - AI编程资讯聚合 | 专注AI编程工具与实践"
+    description="了解AI编程资讯聚合平台，我们专注于收集和整理AI编程相关的中文资讯，为开发者提供工具与实践指南。永久免费，专业可靠。"
+    keywords="关于我们,AI编程平台,资讯聚合,AI工具,关于,团队介绍"
     image="/images/og-image.svg"
 >
+    <Breadcrumb items={[
+        { name: '首页', url: '/' },
+        { name: '关于我们' }
+    ]} />
+    
     <article itemscope itemtype="https://schema.org/AboutPage">
         <h1 class="mb-4" itemprop="name">关于我们</h1>
         <div itemprop="description">

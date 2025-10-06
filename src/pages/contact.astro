@@ -1,13 +1,19 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 ---
 
 <Layout 
-    title="联系我们 - AI编程资讯聚合"
-    description="联系AI编程资讯聚合平台，提交您的建议、问题或合作需求。我们期待听到您的声音。"
-    keywords="联系我们,反馈,建议,合作"
+    title="联系我们 - AI编程资讯聚合 | 问题反馈与合作咨询"
+    description="联系AI编程资讯聚合平台，提交您的建议、问题或合作需求。我们重视每一位用户的意见，期待听到您的声音。"
+    keywords="联系我们,反馈,建议,合作,客户服务,问题咨询"
     image="/images/og-image.svg"
 >
+    <Breadcrumb items={[
+        { name: '首页', url: '/' },
+        { name: '联系我们' }
+    ]} />
+    
     <article itemscope itemtype="https://schema.org/ContactPage">
         <h1 class="mb-4" itemprop="name">联系我们</h1>
         <div itemprop="text">

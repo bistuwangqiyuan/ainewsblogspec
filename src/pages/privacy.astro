@@ -1,13 +1,19 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 ---
 
 <Layout 
-    title="隐私政策 - AI编程资讯聚合"
-    description="查看AI编程资讯聚合平台的隐私政策，了解我们如何收集、使用和保护您的个人信息。"
-    keywords="隐私政策,数据保护,用户隐私"
+    title="隐私政策 - AI编程资讯聚合 | 数据保护与用户隐私"
+    description="查看AI编程资讯聚合平台的隐私政策，了解我们如何收集、使用和保护您的个人信息。我们承诺尽量少收集数据，仅用于站点必要功能。"
+    keywords="隐私政策,数据保护,用户隐私,个人信息保护,GDPR,隐私声明"
     image="/images/og-image.svg"
 >
+    <Breadcrumb items={[
+        { name: '首页', url: '/' },
+        { name: '隐私政策' }
+    ]} />
+    
     <article itemscope itemtype="https://schema.org/WebPage">
         <h1 class="mb-4" itemprop="name">隐私政策</h1>
         <div itemprop="text">

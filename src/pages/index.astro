@@ -4,6 +4,7 @@ import Alert from '../components/Alert.astro';
 import Filters from '../components/Filters.astro';
 import ArticlesTable from '../components/ArticlesTable.astro';
 import Paginator from '../components/Paginator.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import { fetchArticles } from '../utils/supabaseClient';
 
 const page = Number(Astro.url.searchParams.get('page') ?? '1') || 1;
@@ -78,8 +79,8 @@ const breadcrumbData = {
 >
     <!-- Enhanced structured data -->
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} slot="head" />
-    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbData)} slot="head" />
     
+    <Breadcrumb items={[{ name: '首页' }]} />
     <h1 class="mb-6">AI 编程资讯</h1>
     <Filters params={{ q, timeWindow, source, sort, order }} />
     {
