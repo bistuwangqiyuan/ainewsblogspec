@@ -1,18 +1,63 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 // Read from import.meta.env first (Astro runtime), then fall back to process.env for tests/CI
-const metaEnv = (import.meta as any)?.env || {};
-const supabaseUrl: string | undefined = metaEnv.PUBLIC_SUPABASE_URL || (typeof process !== 'undefined' ? (process.env.PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL) : undefined);
-const supabaseAnonKey: string | undefined = metaEnv.PUBLIC_SUPABASE_ANON_KEY || (typeof process !== 'undefined' ? (process.env.PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY) : undefined);
+function getEnv() {
+  // Direct access to avoid "Dynamic access of import.meta.env is not supported" error
+  let supabaseUrl: string | undefined;
+  let supabaseAnonKey: string | undefined;
+  
+  try {
+    supabaseUrl = import.meta.env?.PUBLIC_SUPABASE_URL;
+    supabaseAnonKey = import.meta.env?.PUBLIC_SUPABASE_ANON_KEY;
+  } catch (e) {
+    // Fallback for non-Astro environments
+  }
+  
+  // Fallback to process.env
+  if (!supabaseUrl && typeof process !== 'undefined') {
+    supabaseUrl = process.env.PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL;
+  }
+  if (!supabaseAnonKey && typeof process !== 'undefined') {
+    supabaseAnonKey = process.env.PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
+  }
+  
+  return { supabaseUrl, supabaseAnonKey };
+}
 
-// Create a dummy client if credentials are missing (for build/preview mode)
-// This allows the app to build and run without crashing, but queries will fail gracefully
-const dummyUrl = supabaseUrl || 'https://placeholder.supabase.co';
-const dummyKey = supabaseAnonKey || 'placeholder-key';
+// Lazy initialization to avoid crashing at module load time
+let _supabaseClient: SupabaseClient | null = null;
 
-export const supabase = createClient(dummyUrl, dummyKey, {
-  auth: {
-    persistSession: true
+function getSupabaseClient(): SupabaseClient | null {
+  if (_supabaseClient) return _supabaseClient;
+  
+  const { supabaseUrl, supabaseAnonKey } = getEnv();
+  
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.warn('Supabase credentials not configured');
+    return null;
+  }
+  
+  try {
+    _supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: true
+      }
+    });
+    return _supabaseClient;
+  } catch (error) {
+    console.error('Error creating Supabase client:', error);
+    return null;
+  }
+}
+
+// Export a getter instead of a direct client
+export const supabase = new Proxy({} as SupabaseClient, {
+  get(target, prop) {
+    const client = getSupabaseClient();
+    if (!client) {
+      throw new Error('Supabase client not initialized');
+    }
+    return (client as any)[prop];
   }
 });
 
@@ -41,19 +86,21 @@ export type ArticleQueryParams = {
 };
 
 export async function fetchArticles(params: ArticleQueryParams) {
-  // Check if we have valid credentials
-  if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn('Supabase credentials not configured, returning empty results');
-    return { data: [] as ArticleRow[], total: 0 };
-  }
-
   const { page, pageSize, sort = 'published_at', order = 'desc', keyword, source, category, timeWindow } = params;
 
   const from = (page - 1) * pageSize;
   const to = from + pageSize - 1;
 
   try {
-    let query = supabase
+    const client = getSupabaseClient();
+    
+    // Check if we have valid credentials
+    if (!client) {
+      console.warn('Supabase credentials not configured, returning empty results');
+      return { data: [] as ArticleRow[], total: 0 };
+    }
+
+    let query = client
       .from('articles')
       .select('id, source_id, title, summary, author, original_url, cover_image_url, published_at, popularity_score, growth_score', { count: 'exact' });
 
